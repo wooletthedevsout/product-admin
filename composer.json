@@ -1,0 +1,19 @@
+{
+    "name": "wooletthedevsout/product-admin",
+    "description": "WLTDO module for product admin and edit implementations.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "carlos",
+            "email": "geral@meuppt.pt"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "wooletthedevsout\\Product\\Admin\\": "src/"
+        }
+    }
+}

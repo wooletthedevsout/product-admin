@@ -1,10 +1,20 @@
 <?php 
-
+/**
+ * Class Panels
+ * 
+ * From an initial instance of Tabs, adds fields
+ * to the newly included tab.
+ * 
+ * @since 1.0.0
+ * @package Wooletthedevsout\Product\Admin
+ * @author Carlos Artur Matos
+ * 
+ */
 namespace Wooletthedevsout\Product\Admin;
 
 class Panels
 {
-	protected $tabName;
+	protected $tab_name;
 
 	public $tab_id;
 
@@ -14,7 +24,7 @@ class Panels
 
 	public $meta_fields = [];
 
-	public function __construct(string $tabName, string $tab_id, array $forms)
+	public function __construct(string $tab_name, string $tab_id, array $forms)
 	{
 		$this->tab_id = $tab_id;
 		$this->forms = $forms;

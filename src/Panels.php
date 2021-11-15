@@ -12,25 +12,28 @@ class Panels
 
 	public $forms;
 
+	public $meta_fields = [];
+
 	public function __construct(string $tabName, string $tab_id, array $forms)
 	{
 		$this->tab_id = $tab_id;
 		$this->forms = $forms;
 
+		foreach($forms as $form) {
+			$this->meta_fields[] = $form[1] . '_' . $form[0];
+		}
+
 		$this->context = '<div id="' . $tab_id . '" class="panel woocommerce_options_panel" style="padding-left: 10px;">';
 		add_action('woocommerce_product_data_panels', [$this, 'render']);
+		add_action('woocommerce_process_product_meta', [$this, 'save']);
 	}
 
 	public function render()
-	{?>
-		 <?php echo $this->context; 
+	{
+		echo $this->context; 
+		$this->forms($this->forms);
 
-		 $this->forms($this->forms);
-
-		 ?>
-
-		</div>
-		 <?php
+		?></div><?php
 	}
 
 	public function addTitle(string $title)
@@ -91,5 +94,19 @@ class Panels
 				));
 			}
 		}
+	}
+
+	public function save($post_id)
+	{
+		$product = wc_get_product($post_id);
+
+		foreach ($this->meta_fields as $field) {
+		
+			if(isset($_POST[$field])) {
+				$product->update_meta_data($field, $_POST[$field]);
+			}	
+		}	
+
+		$product->save();
 	}
 }

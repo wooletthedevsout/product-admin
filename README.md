@@ -14,7 +14,7 @@ In the plugin's main file, use the classes and autoload them with Composer.
 
 ```php
 
-use OnePedras\{Tabs, Panels};
+use Wooletthedevsout\Product\Admin\{Tabs, Panels};
 require __DIR__ . '/vendor/autoload.php';
 
 $tabs = new Tabs('New Tab', $fields);

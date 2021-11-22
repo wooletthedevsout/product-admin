@@ -12,7 +12,7 @@
  */
 namespace Wooletthedevsout\Product\Admin;
 
-class Panels
+class Panels implements \Countable
 {
 	protected $tab_name;
 
@@ -23,6 +23,8 @@ class Panels
 	public $forms;
 
 	public $meta_fields = [];
+
+	public $after;
 
 	public function __construct(string $tab_name, string $tab_id, array $forms)
 	{
@@ -35,15 +37,19 @@ class Panels
 
 		$this->context = '<div id="' . $tab_id . '" class="panel woocommerce_options_panel" style="padding-left: 10px;">';
 		add_action('woocommerce_product_data_panels', [$this, 'render']);
-		add_action('woocommerce_process_product_meta', [$this, 'save']);
+		add_action('woocommerce_admin_process_product_object', [$this, 'save']);
 	}
 
 	public function render()
 	{
-		echo $this->context; 
-		$this->forms($this->forms);
+		?><?php 
+			echo $this->context; 
+			$this->forms($this->forms);
+			echo $this->after;
+		?>
 
-		?></div><?php
+		</div>
+		<?php
 	}
 
 	public function addTitle(string $title)
@@ -106,17 +112,28 @@ class Panels
 		}
 	}
 
-	public function save($post_id)
+	public function save($product)
 	{
-		$product = wc_get_product($post_id);
 
 		foreach ($this->meta_fields as $field) {
 		
 			if(isset($_POST[$field])) {
 				$product->update_meta_data($field, $_POST[$field]);
+				$product->save_meta_data();
 			}	
-		}	
+		}
 
 		$product->save();
+
+	}
+
+	public function count()
+	{
+		return count($this->meta_fields);
+	}
+
+	public function addAfter(string $content)
+	{
+		$this->after = $content;
 	}
 }
